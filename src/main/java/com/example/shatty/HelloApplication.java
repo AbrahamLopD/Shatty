@@ -1,5 +1,6 @@
 package com.example.shatty;
 
+import com.example.shatty.backend.GestionBBDD;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -14,6 +15,7 @@ public class HelloApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
         stage.setTitle("WhatsApp2");
         stage.setScene(scene);
+        GestionBBDD.conectar();
         stage.show();
     }
 
