@@ -1,0 +1,2 @@
+insert into Contactos (Nombre, Apellidos, Avatar) values ('Abraham', 'López', 'https://media-exp1.licdn.com/dms/image/C5603AQEWsEKK9I7qOw/profile-displayphoto-shrink_800_800/0/1611942733248?e=2147483647&v=beta&t=2CwO2PsEvca-gG1QseV5n2Uq21KmDFA_iRBZ0gGsgXc');
+insert into Contactos (Nombre, Apellidos, Avatar) values ('Josemi', 'Ferreira', 'https://pbs.twimg.com/media/FdxK3VkWABIe92l?format=jpg&name=large');
