@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="600.0" stylesheets="@../../../values/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.shatty.HelloController">
+   <top>
+      <HBox alignment="CENTER" prefHeight="113.0" prefWidth="600.0" styleClass="light-gray-background" stylesheets="@../../../values/style.css" BorderPane.alignment="CENTER">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Login">
+               <font>
+                  <Font name="Ebrima" size="40.0" />
+               </font>
+            </Text>
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" layoutX="31.0" layoutY="29.0" prefHeight="92.0" prefWidth="539.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Usuario">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </Text>
+                  <TextField fx:id="usuario" prefHeight="25.0" prefWidth="245.0" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" layoutX="31.0" layoutY="123.0" prefHeight="92.0" prefWidth="539.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Contraseña">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </Text>
+                  <PasswordField fx:id="contrasenya" prefHeight="25.0" prefWidth="211.0" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" layoutX="20.0" layoutY="215.0" prefHeight="89.0" prefWidth="560.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#switchToSceneChat" prefWidth="123.0" styleClass="radius" stylesheets="@../../../values/style.css" text="Login">
+                     <font>
+                        <Font name="Ebrima" size="17.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </Pane>
+   </center>
+</BorderPane>
