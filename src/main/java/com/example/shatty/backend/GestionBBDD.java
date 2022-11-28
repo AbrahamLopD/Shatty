@@ -2,6 +2,10 @@ package com.example.shatty.backend;
 
 import java.io.*;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class GestionBBDD {
     public static final String ANSI_RED = "\u001B[31m";
@@ -96,6 +100,10 @@ public class GestionBBDD {
         }
     }
 
+    /**
+     * Método que hace las inserciones pertinentes pasadas por un archivo
+     * @param file
+     */
     public static void insertar(File file) {
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
@@ -112,6 +120,44 @@ public class GestionBBDD {
             e.printStackTrace();
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Método que hace las inserciones pertinentes pasándolas como valores
+     * Nota: No debes poner las comillas simples en los nuevos datos
+     * @param tabla
+     * @param values
+     * @param data
+     */
+    public static void insertar(String tabla, String[] values, String[] data) {
+        String sql = "INSERT INTO " + tabla + " (";
+
+        int i = 0;
+        for (String valor : values) {
+            sql += valor;
+
+            i++;
+            if (i < values.length) sql += ", ";
+        }
+
+        sql += ") values (";
+
+        i = 0;
+        for (String dato : data) {
+            sql += "'" + dato + "'";
+
+            i++;
+            if (i < data.length) sql += ", ";
+        }
+
+        sql += ");";
+
+        try {
+            System.out.println(sql);
+            st.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -195,6 +241,7 @@ public class GestionBBDD {
         return rs;
     }
 
+    //region Métodos para devolver información
     /**
      * Método que se encarga de listar
      * Precondición: Recibir un ResultSet válido
@@ -214,6 +261,100 @@ public class GestionBBDD {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Método que se encarga de retornar una columna
+     * Precondición: Recibir un ResultSet válido
+     * @param rs
+     */
+    public static List<String> devuelveColumna(ResultSet rs) {
+        List<String> resultadoColumna = new ArrayList<String>();
+        try {
+            while (rs.next()) {
+                ResultSetMetaData md = rs.getMetaData();
+                int numColumns = md.getColumnCount();
+                String columnName = md.getColumnName(1);
+
+                resultadoColumna.add(rs.getString(columnName));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return resultadoColumna;
+    }
+
+    /**
+     * Método que se encarga de retornar una fila dada
+     * Precondición: Recibir un ResultSet válido
+     * @param rs
+     */
+    public static Map<String, String> devuelveFila(ResultSet rs) {
+        Map<String, String> resultadoFila = new HashMap<String, String>();
+        try {
+            while (rs.next()) {
+                ResultSetMetaData md = rs.getMetaData();
+                int numColumns = md.getColumnCount();
+                for (int i = 0; i < numColumns; i++) {
+                    String columnName = md.getColumnName(i +1);
+
+                    resultadoFila.put(columnName, rs.getString(columnName));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return resultadoFila;
+    }
+
+    /**
+     * Método que se encarga de retornar una columna dada
+     * Precondición: Recibir un ResultSet válido
+     * @param rs
+     */
+    public static List<Map<String, String>> devuelveFilas(ResultSet rs) {
+        List<Map<String, String>> resultadoFilas = new ArrayList<Map<String, String>>();
+        try {
+            int cont = 0;
+            while (rs.next()) {
+                ResultSetMetaData md = rs.getMetaData();
+                int numColumns = md.getColumnCount();
+                for (int i = 0; i < numColumns; i++) {
+                    String columnName = md.getColumnName(i +1);
+
+                    resultadoFilas.get(cont).put(columnName, rs.getString(columnName));
+                }
+                cont++;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return resultadoFilas;
+    }
+    //endregion
+
+    /**
+     * Método que se encarga de devolver true en caso de que exista la columna pedida y false en caso contrario
+     * Precondición: Recibir un ResultSet válido
+     * @param rs
+     */
+    public static boolean existe(int idBuscada, ResultSet rs) {
+        boolean exist = false;
+
+        try {
+            while (rs.next()) {
+                ResultSetMetaData md = rs.getMetaData();
+                String columnName = md.getColumnName(1);
+                if(columnName == Integer.toString(idBuscada)) return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return exist;
     }
 
     /**
@@ -273,11 +414,11 @@ public class GestionBBDD {
             DatabaseMetaData dbm = connection.getMetaData();
 
             ResultSet tablaContactos = dbm.getTables(null, null, "Contactos", null);
-            ResultSet tablaChat = dbm.getTables(null, null, "Chat", null);
+            ResultSet tablaChats = dbm.getTables(null, null, "Chats", null);
             ResultSet tablaMensajes = dbm.getTables(null, null, "Mensajes", null);
             ResultSet tablaContactosChat = dbm.getTables(null, null, "Contactos_Chat", null);
-            if (tablaContactos.next() || tablaChat.next() || tablaMensajes.next() || tablaContactosChat.next()) {
-                String sql = "DROP TABLE Contactos_Chat, Mensajes, Contactos, Chat";
+            if (tablaContactos.next() || tablaChats.next() || tablaMensajes.next() || tablaContactosChat.next()) {
+                String sql = "DROP TABLE Contactos_Chat, Mensajes, Contactos, Chats";
                 System.out.println(sql);
                 st.executeUpdate(sql);
                 System.out.println("Tablas borradas con éxito");
