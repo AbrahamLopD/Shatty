@@ -76,13 +76,15 @@ public class HelloController {
         String error = "";
         boolean correcto = false;
         if (usuario.getText().length() > 0 && contrasenya.getText().length() > 0) {
-            if(LoginUtilities.GetContactoByNombreYPassword(usuario.getText(), contrasenya.getText()) != -1) {
+            int idContacto = LoginUtilities.GetContactoByNombreYPassword(usuario.getText(), contrasenya.getText());
+            if(idContacto != -1) {
                 correcto = true;
                 root = FXMLLoader.load(getClass().getResource("chat-view.fxml"));
                 stage = (Stage)((Node)event.getSource()).getScene().getWindow();
                 scene = new Scene(root, 1006, 702);
                 stage.setScene(scene);
                 stage.show();
+                mostrarChats(idContacto);
             } else {
                 error = "El usuario y la contraseña no coinciden";
             }
@@ -102,12 +104,10 @@ public class HelloController {
     //endregion
 
     //region Contactos
-    public void mostrarChats(int id){
+    private void mostrarChats(int id){
         List<Map<String, String>> mapas = ManagerChat.getAllChatsInformationByYourId(id);
 
-
-        for (Map<String, String> mapa: mapas
-             ) {
+        for (Map<String, String> mapa: mapas) {
             avatarChat.setImage(new Image(mapa.get("Avatar")));
             nombreChat.setText(mapa.get("Nombre"));
             ultimoMensajeChat.setText(mapa.get("UltimoMensaje"));
