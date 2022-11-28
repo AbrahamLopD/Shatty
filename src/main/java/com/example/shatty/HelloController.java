@@ -84,7 +84,7 @@ public class HelloController {
                 scene = new Scene(root, 1006, 702);
                 stage.setScene(scene);
                 stage.show();
-                mostrarChats(idContacto);
+//                mostrarChats(idContacto);
             } else {
                 error = "El usuario y la contraseña no coinciden";
             }
