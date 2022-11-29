@@ -40,7 +40,6 @@ public class ManagerChat {
         List<Map<String, String>> chats = new ArrayList<Map<String, String>>();
 
         List<String> idChats = getChatsIds(id);
-
         for (String idChat : idChats) {
             Map<String, String> chat;
              chat = GestionBBDD.devuelveFila(GestionBBDD.ejecutarSelect("Chats", new String[]{"NombreChat", "Bloqueado"},
@@ -65,9 +64,10 @@ public class ManagerChat {
      * @return
      */
     private static List<String> getChatsIds(int id) {
-        List<String> idChats = GestionBBDD.devuelveColumna(GestionBBDD.ejecutarSelect("Chats", new String[]{"IDChat"},
-                "WHERE IDContacto = '" + id + "'"));
+        List<String> idChats = GestionBBDD.devuelveColumna(GestionBBDD.ejecutarSelect("Contactos_Chat", new String[]{"IDChat"},
+                "WHERE IDContacto = " + id));
 
+        System.out.println("ManagerChat idChat: " + idChats);
         return idChats;
     }
 
@@ -78,8 +78,8 @@ public class ManagerChat {
      * @return
      */
     private static List<String> getContactosIds(int idContacto, int idChat) {
-        List<String> idContactos = GestionBBDD.devuelveColumna(GestionBBDD.ejecutarSelect("Chats", new String[]{"IDContacto"},
-                "WHERE IDChat = " + idChat + "' AND NOT IDContacto = '" + idContacto + "'"));
+        List<String> idContactos = GestionBBDD.devuelveColumna(GestionBBDD.ejecutarSelect("Contactos_Chat", new String[]{"IDContacto"},
+                "WHERE IDChat = " + idChat + " AND NOT IDContacto = " + idContacto));
 
         return idContactos;
     }

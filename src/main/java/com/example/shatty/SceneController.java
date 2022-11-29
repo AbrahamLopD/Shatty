@@ -1,43 +1,37 @@
 package com.example.shatty;
 
-import javafx.event.ActionEvent;
+import com.example.shatty.actions.ManagerChat;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.stage.Stage;
+import javafx.fxml.Initializable;
+import javafx.scene.control.ListView;
 
-import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 public class SceneController {
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
 
-    //Declaramos los campos de texto para su comprobación
-    @FXML
-    private TextField usuario;
-    @FXML
-    private PasswordField contrasenya;
+    public int idContacto;
 
-    public void switchToSceneChat(ActionEvent event) throws IOException {
-        if (usuario.getText().length() > 0 && contrasenya.getText().length() > 0) {
-            root = FXMLLoader.load(getClass().getResource("chat-view.fxml"));
-            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            scene = new Scene(root, 1006, 702);
-            stage.setScene(scene);
-            stage.show();
-        } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setHeaderText("Advertencia");
-            alert.setTitle("Datos no introducidos");
-            alert.setContentText("Debe rellenar ambos campos de texto");
-            alert.showAndWait();
+    //region Chat FXMLs
+    @FXML
+    private ListView<String> listViewChat;
+    //endregion
+
+    //region Contactos
+    public void mostrarChats(int id) {
+        List<Map<String, String>> mapas = ManagerChat.getAllChatsInformationByYourId(id);
+
+        System.out.println("Scene controller:" + mapas.get(0));
+        for (Map<String, String> mapa : mapas) {
+            listViewChat.getItems().add(mapa.get("NombreChat"));
+            //listViewChat.getItems().add(mapa.get("Avatar"));
+            System.out.println(listViewChat);
+
         }
-
     }
+
+
+    //endregion
 }
