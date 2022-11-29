@@ -16,8 +16,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.Date;
-import java.util.List;
-import java.util.Map;
 
 public class HelloController {
     private Stage stage;
@@ -34,12 +32,6 @@ public class HelloController {
     //region Chat FXMLs
     @FXML
     private ListView<String> listViewChat;
-    @FXML
-    private ImageView avatarChat;
-    @FXML
-    private Label nombreChat;
-    @FXML
-    private Label ultimoMensajeChat;
     //endregion
 
     /**
@@ -72,19 +64,38 @@ public class HelloController {
     }
 
     //region Cambio escena
-    public void switchToSceneChat(ActionEvent event) throws IOException {
+
+    /**
+     * Comprueba si el usuario y la contraseña introducidos en la vista de Login son correctos,
+     * si es así navega hacia la vista de chats, si no muestra un Alert al usuario
+     * @param event
+     * @throws IOException
+     */
+    public void switchToSceneChat(ActionEvent event) {
         String error = "";
         boolean correcto = false;
         if (usuario.getText().length() > 0 && contrasenya.getText().length() > 0) {
             int idContacto = LoginUtilities.GetContactoByNombreYPassword(usuario.getText(), contrasenya.getText());
             if(idContacto != -1) {
                 correcto = true;
-                root = FXMLLoader.load(getClass().getResource("chat-view.fxml"));
-                stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-                scene = new Scene(root, 1006, 702);
-                stage.setScene(scene);
-                stage.show();
-//                mostrarChats(idContacto);
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader();
+                    fxmlLoader.setLocation(getClass().getResource("chat-view.fxml"));
+
+                    Scene scene = new Scene(fxmlLoader.load(), 1006, 702);
+                    Stage stage = new Stage();
+                    stage.setScene(scene);
+                    stage.initModality(Modality.APPLICATION_MODAL);
+
+                    // Llamamos al método para agregar los chats que tiene el contacto que inicia sesión
+                    SceneController controller = (SceneController) fxmlLoader.getController();
+                    controller.mostrarChats(idContacto);
+
+                    stage.showAndWait();
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
             } else {
                 error = "El usuario y la contraseña no coinciden";
             }
@@ -101,18 +112,5 @@ public class HelloController {
         }
 
     }
-    //endregion
-
-    //region Contactos
-    private void mostrarChats(int id){
-        List<Map<String, String>> mapas = ManagerChat.getAllChatsInformationByYourId(id);
-
-        for (Map<String, String> mapa: mapas) {
-            avatarChat.setImage(new Image(mapa.get("Avatar")));
-            nombreChat.setText(mapa.get("Nombre"));
-            ultimoMensajeChat.setText(mapa.get("UltimoMensaje"));
-        }
-    }
-
     //endregion
 }

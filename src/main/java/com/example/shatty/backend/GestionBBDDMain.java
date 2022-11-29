@@ -1,12 +1,8 @@
 package com.example.shatty.backend;
 
-import com.example.shatty.HelloController;
 import com.example.shatty.actions.ManagerChat;
 
 import java.io.File;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.sql.Date;
 
 public class GestionBBDDMain {
     public static void main(String[] args) {
