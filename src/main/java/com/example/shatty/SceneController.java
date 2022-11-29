@@ -25,7 +25,7 @@ public class SceneController {
     private ListView<String> listViewMensajes;
 
     @FXML
-    private Label headerLabel;
+    private Label headerLabel;//xd
     //endregion
 
     //region Contactos
