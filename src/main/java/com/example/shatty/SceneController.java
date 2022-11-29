@@ -3,6 +3,7 @@ package com.example.shatty;
 import com.example.shatty.actions.ManagerChat;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 
 import java.net.URL;
@@ -17,6 +18,14 @@ public class SceneController {
     //region Chat FXMLs
     @FXML
     private ListView<String> listViewChat;
+    //endregion
+
+    //region Mensajes FXMLs
+    @FXML
+    private ListView<String> listViewMensajes;
+
+    @FXML
+    private Label headerLabel;
     //endregion
 
     //region Contactos
